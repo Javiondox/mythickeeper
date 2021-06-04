@@ -24,7 +24,7 @@
           <q-btn
             flat
             label="Buscar"
-            v-model="isdesktop"
+            v-if="this.$q.platform.is.desktop"
             v-on:click="searchRootFolder"
             color="primary"
             v-close-popup
@@ -90,7 +90,13 @@ export default {
           EventBus.$emit('replaceFirstIndexRoute', this.replaceFirstIndexRoute);
         } else {
           //Si capacitor
-          //TODO CAPACITOR
+		  let DirectoryPath = 'MythicKeeper'
+          fm.createFolder(DirectoryPath)
+		  UserPrefs.TemporalStorage.set('sRealPath', DirectoryPath);
+          UserPrefs.TemporalStorage.set('sPath', '');
+          UserPrefs.set('kStarted', true);
+          this.$router.push('/gridExplorer'); //Llevar al explorador
+          EventBus.$emit('replaceFirstIndexRoute', this.replaceFirstIndexRoute);
         }
       } else {
         //Si ya existe la carpeta, llevarlo a la vista, por si acaso
@@ -108,7 +114,6 @@ export default {
       if (UserPrefs.get('kMainFolderLocation') == '') {
         const mode = this.$q.platform.is.mobile ? 'Mobile' : '';
         const fm = require(`src/js/FileManager${mode}.js`);
-        if (mode == '') {
           //Si electron
           const {
             ipcRenderer
@@ -148,10 +153,6 @@ export default {
             UserPrefs.set('kStarted', true);
             this.$router.push('/gridExplorer'); //Llevar al explorador
           }
-        } else {
-          //Si capacitor
-          //TODO CAPACITOR
-        }
       } else {
         //Si ya existe la carpeta, llevarlo a la vista, por si acaso
         if (UserPrefs.get('kMainFolderView') == 'Item') {
@@ -162,7 +163,7 @@ export default {
       }
     },
     closeSelf() {
-      colrdialog = false;
+      this.colrdialog = false;
     }
   },
   computed: {

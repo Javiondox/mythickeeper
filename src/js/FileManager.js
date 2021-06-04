@@ -15,7 +15,6 @@ var rootPath = UserPrefs.get('kMainFolderLocation'); //Path verdadero hasta la c
 var mediaPath = UserPrefs.get('kMediaFolderLocation');
 var currentPath = UserPrefs.TemporalStorage.getItem('sRealPath'); //Path verdadero completo
 var userPath = UserPrefs.TemporalStorage.getItem('sPath'); //Path falso DESDE la carpeta root
-var currentContent = {};
 
 if (UserPrefs.get('kMainFolderLocation') != '' || undefined) {
   setRootPath(UserPrefs.get('kMainFolderLocation'));
@@ -84,6 +83,11 @@ export function setRootPath(newRootPath) {
 export function setMediaPath(newMediaPath) {
   rootPath = newMediaPath;
 }
+
+/* 
+	Operaciones
+
+*/
 
 export function loadFile(filePath) {
   return new Promise(async (resolve, reject) => {

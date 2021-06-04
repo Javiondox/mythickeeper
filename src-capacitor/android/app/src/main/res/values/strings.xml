@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">MythicKeeper</string>
+    <string name="title_activity_main">MythicKeeper</string>
+    <string name="package_name">org.javiondox.mythickeeper</string>
+    <string name="custom_url_scheme">org.javiondox.mythickeeper</string>
+</resources>

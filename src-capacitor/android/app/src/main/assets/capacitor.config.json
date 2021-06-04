@@ -1,0 +1,10 @@
+{
+  "appId": "org.javiondox.mythickeeper",
+  "appName": "MythicKeeper",
+  "bundledWebRuntime": false,
+  "npmClient": "yarn",
+  "webDir": "www",
+  "server": {
+    "url": "http://192.168.0.241:8080"
+  }
+}

@@ -4,46 +4,15 @@
       ¡Bienvenido a MythicKeeper!
     </div>
 
-    <div class="text-h1" style="margin: 0 auto;">{LOGO}</div>
+    <div class="text-h1" style="margin: 0 auto;">
+		<q-img v-if="isDark" src="~assets/logolightbig.png"></q-img>
+		<q-img v-else src="~assets/logodarkbig.png"></q-img>
+	</div>
 
     <div class="text-h6" style="text-align:center;">
       MythicKeeper es una herramienta que permite a escritores anotar
       rápidamente sus ideas independientemente de la plataforma utilizando
       Markdown y servicios de sincronización.
-      <!---<div class="q-pa-md row items-start q-gutter-md">
-        <CardGrid Type="Folder"></CardGrid>
-        <CardGrid
-          Name="Paella"
-          ImgSrc="https://astelus.com/wp-content/viajes/La-paella-valenciana-y-su-receta-original.jpg"
-          Type="Sheet"
-          Image
-        ></CardGrid>
-        <CardGrid
-          Name='"Paella"'
-          ImgSrc="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Paella_de_marisco_01.jpg/1200px-Paella_de_marisco_01.jpg"
-          Type="Shit"
-          Icon="mood_bad"
-          Color="pink"
-          Image
-        ></CardGrid>
-      </div>
-      <div class="q-pa-md column items-start q-gutter-md">
-        <ItemList Type="Folder" />
-        <ItemList
-          Name="Paella"
-          ImgSrc="https://astelus.com/wp-content/viajes/La-paella-valenciana-y-su-receta-original.jpg"
-          Type="Sheet"
-          Image
-        ></ItemList>
-        <ItemList
-          Name='"Paella"'
-          ImgSrc="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Paella_de_marisco_01.jpg/1200px-Paella_de_marisco_01.jpg"
-          Type="Shit"
-          Icon="mood_bad"
-          Color="pink"
-          Image="true"
-        ></ItemList>
-      </div>-->
     </div>
     <div class="flex flex-center q-mx-xl">
       <transition appear enter-active-class="animated heartBeat">
@@ -118,6 +87,15 @@ export default {
         this.$router.push('/gridExplorer');
       }
     }
+  },
+  computed: {
+	  isDark: function (){
+		  if(this.$q.dark.isActive){
+			  return true
+		  } else {
+			  return false
+		  }
+	  }
   },
   mounted() {
     EventBus.$emit('globalBreadCrumbs', false);
