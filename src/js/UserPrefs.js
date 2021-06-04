@@ -60,7 +60,7 @@ export function load() {
         LocalStorage.set(key, getDefaultByName(key));
       }
     } else {
-      //Versión distinta o sobra alguna, toca un reset
+      //Versión distinta o sobra alguna, toca un reset.
       resetValuesToDefault();
       return;
     }
