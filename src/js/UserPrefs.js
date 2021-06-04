@@ -9,10 +9,9 @@ var Keys = [
   'kMainFolderLocation',
   'kMediaFolderLocation',
   'kMainFolderView',
-  'kDynamicTitle',
-  'kDropboxToken'
+  'kDynamicTitle'
 ];
-var DValues = [true, false, false, '', '', 'Grid', true, ''];
+var DValues = [true, false, false, '', '', 'Grid', true];
 
 if ((LocalStorage.getLength = 0)) {
   resetValuesToDefault();
