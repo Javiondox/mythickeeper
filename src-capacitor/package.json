@@ -1,0 +1,11 @@
+{
+  "name": "mythickeeper",
+  "version": "0.0.1",
+  "description": "A worldbuilding tool",
+  "author": "José Javier Sánchez Piedras (javi.sp@protonmail.com)",
+  "private": true,
+  "dependencies": {
+    "@capacitor/cli": "^2.0.0",
+    "@capacitor/core": "^2.0.0"
+  }
+}
