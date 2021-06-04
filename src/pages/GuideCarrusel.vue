@@ -56,7 +56,6 @@
             color=""
             text-color="white"
             unelevated
-            to="/"
             label="Listo"
           />
         </q-carousel-slide>
@@ -80,6 +79,11 @@ export default {
     trashGuide: function() {
       let UserPrefs = require('src/js/UserPrefs.js');
       UserPrefs.set('kFirstTime', false);
+	  if(UserPrefs.get('kMainFolderLocation') == '' || undefined){
+		  this.$router.push("/landing")
+	  } else {
+		  this.$router.push("/help")
+	  }
     }
   }
 };
