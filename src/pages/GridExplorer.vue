@@ -20,16 +20,11 @@
         </transition>
       </div>
     </div>
-    <transition
-      appear
-      enter-active-class="animated fadeIn"
-      leave-active-class="animated fadeOut"
-    >
       <q-separator
+	  v-if="contentfolders.length > 0"
         class="q-ma-lg"
         style="display:in-line-block;min-width:96%"
       />
-    </transition>
     <div class="flex row content-start">
       <div v-for="sheet in contentsheets" v-bind:key="sheet.id">
         <transition
@@ -49,6 +44,13 @@
         </transition>
       </div>
     </div>
+	<transition
+	appear
+      enter-active-class="animated fadeIn"
+      leave-active-class="animated fadeOut"
+	  >
+	<div class="q-mt-lg" v-if="isEmpty"><p class="text-center text-h3">Vacío...</p><p class="text-center text-h5">¡Prueba a crear algunos elementos!</p></div>
+  </transition>
   </q-page>
   <q-page v-else>
     <div class="q-ma-auto col-md-4 absolute-center">
@@ -74,7 +76,8 @@ export default {
     return {
       contents: true,
       contentfolders: [],
-      contentsheets: []
+      contentsheets: [],
+	  isEmpty: false
     };
   },
   components: {
@@ -118,6 +121,10 @@ export default {
           }
         }
         this.contentsheets = tempData;
+
+		if(this.contentfolders.length + this.contentsheets.length == 0){
+			this.isEmpty = true;
+		}
       } else {
         //TODO CAPACITOR
       }

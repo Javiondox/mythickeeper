@@ -75,10 +75,11 @@ function getDefaultByName(key) {
 }
 
 export function resetValuesToDefault() {
-  LocalStorage.clear;
+  LocalStorage.clear();
   for (let i = 0; i < Keys.length; i++) {
     LocalStorage.set(Keys[i], DValues[i]);
   }
+  SessionStorage.clear();
 }
 
 export function get(key) {

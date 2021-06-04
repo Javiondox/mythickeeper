@@ -239,13 +239,14 @@ export default {
               const fm = require(`src/js/FileManager${mode}.js`);
               const rootpath = UserPrefs.get('kMainFolderLocation');
               if (mode == '') {
-                fm.removeContent(rootpath + '/*.*');
+                fm.removeContent(rootpath);
+				UserPrefs.DefinitiveStorage.clear();
+				UserPrefs.TemporalStorage.clear();
+				UserPrefs.resetValuesToDefault();
                 this.$q.notify({
                   type: 'positive',
                   message: `Contenido borrado.`
                 });
-                UserPrefs.DefinitiveStorage.clear;
-                UserPrefs.TemporalStorage.clear;
                 this.$router.push('/guide');
               } else {
                 //TODO CAPACITOR

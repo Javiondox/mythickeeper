@@ -1,7 +1,7 @@
 <template>
   <q-page padding class="flex flex-center">
     <div class="text-h5" style="width:100%;text-align:center;">
-      Retroalimentación
+      Ayuda
     </div>
     <div style="margin: 0 auto; min-width:80%">
       <q-list bordered class="rounded-borders">
