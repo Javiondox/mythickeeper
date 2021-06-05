@@ -240,9 +240,9 @@ export default {
               const rootpath = UserPrefs.get('kMainFolderLocation');
               if (mode == '') {
                 fm.removeContent(rootpath);
-				UserPrefs.DefinitiveStorage.clear();
-				UserPrefs.TemporalStorage.clear();
-				UserPrefs.resetValuesToDefault();
+                UserPrefs.DefinitiveStorage.clear();
+                UserPrefs.TemporalStorage.clear();
+                UserPrefs.resetValuesToDefault();
                 this.$q.notify({
                   type: 'positive',
                   message: `Contenido borrado.`
@@ -262,8 +262,9 @@ export default {
           cancel: true
         })
         .onOk(() => {
-          UserPrefs.DefinitiveStorage.clear;
-          UserPrefs.TemporalStorage.clear;
+          UserPrefs.DefinitiveStorage.clear();
+          UserPrefs.TemporalStorage.clear();
+          UserPrefs.resetValuesToDefault();
           this.$router.push('/guide');
         });
     },

@@ -64,8 +64,8 @@
   </q-page>
 </template>
 <script>
-//let UserPrefs = require('..js/UserPrefs.js');
-//UserPrefs.set('kFirstTime', true);
+let UserPrefs = require('src/js/UserPrefs.js');
+
 export default {
   name: 'GuideCarrusel',
   data() {
@@ -77,7 +77,6 @@ export default {
   },
   methods: {
     trashGuide: function() {
-      let UserPrefs = require('src/js/UserPrefs.js');
       UserPrefs.set('kFirstTime', false);
 	  if(UserPrefs.get('kMainFolderLocation') == '' || undefined){
 		  this.$router.push("/landing")
@@ -85,6 +84,10 @@ export default {
 		  this.$router.push("/help")
 	  }
     }
+  },
+  created(){
+	UserPrefs.set('kFirstTime',true)
+    UserPrefs.set('kStarted',false)
   }
 };
 </script>

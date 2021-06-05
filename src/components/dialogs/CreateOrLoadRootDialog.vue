@@ -1,8 +1,8 @@
 <template>
   <q-btn
-    class="q-mt-xl"
     label="Empezar"
-    text-color="primary"
+    color="primary"
+    text-color="white"
     unelevated
     @click="colrdialog = true"
     no-caps
@@ -85,18 +85,25 @@ export default {
           //Almacenamiento
           UserPrefs.TemporalStorage.set('sRealPath', DirectoryPath);
           UserPrefs.TemporalStorage.set('sPath', '');
+          UserPrefs.set('kMainFolderLocation', DirectoryPath);
           UserPrefs.set('kStarted', true);
           this.$router.push('/gridExplorer'); //Llevar al explorador
           EventBus.$emit('replaceFirstIndexRoute', this.replaceFirstIndexRoute);
         } else {
-          //Si capacitor
-		  let DirectoryPath = 'MythicKeeper'
-          fm.createFolder(DirectoryPath)
-		  UserPrefs.TemporalStorage.set('sRealPath', DirectoryPath);
+          //Si Cordova
+          let DirectoryPath =
+            cordova.file.externalRootDirectory + 'MythicKeeper/';
+          console.log(DirectoryPath);
+          fm.writeFile('test.txt', 'CACA');
+          //fm.createFolder(DirectoryPath);
+          /*DirectoryPath = fm.getDocumentsURI(DirectoryPath);
+          console.log(DirectoryPath);
+          UserPrefs.TemporalStorage.set('sRealPath', DirectoryPath);
           UserPrefs.TemporalStorage.set('sPath', '');
+          UserPrefs.set('kMainFolderLocation', DirectoryPath);
           UserPrefs.set('kStarted', true);
           this.$router.push('/gridExplorer'); //Llevar al explorador
-          EventBus.$emit('replaceFirstIndexRoute', this.replaceFirstIndexRoute);
+          EventBus.$emit('replaceFirstIndexRoute', this.replaceFirstIndexRoute);*/
         }
       } else {
         //Si ya existe la carpeta, llevarlo a la vista, por si acaso
@@ -114,45 +121,42 @@ export default {
       if (UserPrefs.get('kMainFolderLocation') == '') {
         const mode = this.$q.platform.is.mobile ? 'Mobile' : '';
         const fm = require(`src/js/FileManager${mode}.js`);
-          //Si electron
-          const {
-            ipcRenderer
-          } = /*this.$q.platform.is.mobile //Innecesario tanto rollo?
+        //Si electron
+        const {
+          ipcRenderer
+        } = /*this.$q.platform.is.mobile //Innecesario tanto rollo?
             ? ''
             :*/ require('electron');
-          let DirectoryPath = '';
-          let isValid = false;
-          let tries = 0;
-          let selection;
-          while (isValid == false) {
-            if (tries > 0) {
-              await ipcRenderer.sendSync(
-                'showSelectEmptyOnlyMSG',
-                'Selecciona una carpeta compatible.'
-              );
-            }
-            selection = ipcRenderer.sendSync('showDirectoryGetter');
-            console.log(selection);
-            if (selection.canceled != true) {
-              //Si no ha sido cancelado
-              isValid = await fm.checkIfRootFolder(selection.filePaths[0]);
-              DirectoryPath = selection.filePaths[0];
-              tries++;
-            } else {
-              isValid = true; //Unicamente para romper el loop
-            }
+        let DirectoryPath = '';
+        let isValid = false;
+        let tries = 0;
+        let selection;
+        while (isValid == false) {
+          if (tries > 0) {
+            await ipcRenderer.sendSync(
+              'showSelectEmptyOnlyMSG',
+              'Selecciona una carpeta compatible.'
+            );
           }
-          if (
-            (DirectoryPath != undefined || '') &&
-            selection.canceled != true
-          ) {
-            fm.setRootFolder(DirectoryPath);
-            //Almacenamiento
-            UserPrefs.TemporalStorage.set('sRealPath', DirectoryPath);
-            UserPrefs.TemporalStorage.set('sPath', '');
-            UserPrefs.set('kStarted', true);
-            this.$router.push('/gridExplorer'); //Llevar al explorador
+          selection = ipcRenderer.sendSync('showDirectoryGetter');
+          console.log(selection);
+          if (selection.canceled != true) {
+            //Si no ha sido cancelado
+            isValid = await fm.checkIfRootFolder(selection.filePaths[0]);
+            DirectoryPath = selection.filePaths[0];
+            tries++;
+          } else {
+            isValid = true; //Unicamente para romper el loop
           }
+        }
+        if ((DirectoryPath != undefined || '') && selection.canceled != true) {
+          fm.setRootFolder(DirectoryPath);
+          //Almacenamiento
+          UserPrefs.TemporalStorage.set('sRealPath', DirectoryPath);
+          UserPrefs.TemporalStorage.set('sPath', '');
+          UserPrefs.set('kStarted', true);
+          this.$router.push('/gridExplorer'); //Llevar al explorador
+        }
       } else {
         //Si ya existe la carpeta, llevarlo a la vista, por si acaso
         if (UserPrefs.get('kMainFolderView') == 'Item') {

@@ -162,13 +162,19 @@
           v-bind="link"
         />
       </q-list>
-      <q-item-label
-        header
-        class="text-grey-8"
-        style="position: absolute;bottom: 0px;"
+      <transition
+        appear
+        enter-active-class="animated slideInLeft"
+        leave-active-class="animated slideOutRight"
       >
-        Mythickeeper 1.0
-      </q-item-label>
+        <q-item-label
+          header
+          class="text-grey-8"
+          style="position: absolute;bottom: 0px;"
+        >
+          {{ version }}
+        </q-item-label>
+      </transition>
     </q-drawer>
 
     <q-page-container>
@@ -178,6 +184,7 @@
 </template>
 
 <script>
+import { Version } from 'src/App';
 import CreateFolderDialog from 'components/dialogs/CreateFolderDialog.vue';
 import CreateSheetDialog from 'components/dialogs/CreateSheetDialog.vue';
 import EssentialLink from 'components/EssentialLink.vue';
@@ -260,7 +267,8 @@ export default {
       saveButtonDisabled: true,
       mobilePreview: false,
       mobileModel: 'Edición',
-      viewModel: 'Rejilla'
+      viewModel: 'Rejilla',
+      version: Version
     };
   },
   watch: {
@@ -354,7 +362,7 @@ export default {
       this.saveButtonDisabled = !data;
     },
     smartHome() {
-      if (UserPrefs.get('kMainFolderLocation') != '') {
+      if (UserPrefs.get('kMainFolderLocation') != '' || undefined) {
         let rootpath = UserPrefs.get('kMainFolderLocation');
         let rootview = UserPrefs.get('kMainFolderView');
         this.breadfolders = [];

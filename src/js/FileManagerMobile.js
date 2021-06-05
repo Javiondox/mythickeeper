@@ -1,10 +1,10 @@
 //import { Content, SheetContent, FolderContent, RootFolderContent } from 'Content.js'
-import {
+/*import {
   Plugins,
   FilesystemDirectory,
   FilesystemEncoding
-} from '@capacitor/core';
-const { Filesystem } = Plugins;
+} from '@capacitor/core';*/
+/*const { Filesystem } = Plugins;*/
 
 const UserPrefs = require('src/js/UserPrefs.js');
 
@@ -86,8 +86,8 @@ export async function loadFile(filePath) {
   return await Filesystem.readFile(
     filePath,
     {
-      directory: FilesystemDirectory.Documents,
-      encoding: FilesystemEncoding.UTF8
+      directory: Directory.Documents,
+      encoding: Encoding.UTF8
     },
     () => {
       console.log('FMM: Fallo en la lectura de fichero');
@@ -95,13 +95,46 @@ export async function loadFile(filePath) {
   );
 }
 
-export async function writeFile(filePath, data) {
-  await Filesystem.writeFile({
-    path: filePath,
-    data: data,
-    directory: FilesystemDirectory.Documents,
-    encoding: FilesystemEncoding.UTF8
-  });
+export async function writeFile(filepath, dataObj) {
+  window.requestFileSystem(
+    LocalFileSystem.PERSISTENT,
+    0,
+    function(fs) {
+      fs.root.getFile(
+        filepath,
+        { create: true, exclusive: false },
+        function(fileEntry) {
+          fileEntry.createWriter(
+            function(fileWriter) {
+              fileWriter.onwriteend = function() {
+                console.log('Successful file write...');
+                readFile(fileEntry);
+              };
+
+              fileWriter.onerror = function(e) {
+                console.log('Failed file write: ' + e.toString());
+              };
+
+              if (!dataObj) {
+                dataObj = new Blob([''], { type: 'text/plain' });
+              }
+
+              fileWriter.write(dataObj);
+            },
+            e => {
+              console.log(e);
+            }
+          );
+        },
+        e => {
+          console.log(e);
+        }
+      );
+    },
+    e => {
+      console.log(e);
+    }
+  );
 }
 
 export async function renameContent(filepath, futurefilepath) {
@@ -238,20 +271,47 @@ export function copyMarkdown(origin, destination) {
   } catch (e) {}
 }
 
+export function getDocumentsURI(path) {
+  return Filesystem.getURI({
+    path: path,
+    directory: this.Directory.Documents
+  });
+}
+
 /* 
 - Operaciones con carpetas 
 */
 
 export async function createFolder(filepath) {
-  try {
+  window.requestFileSystem(
+    LocalFileSystem.PERSISTENT,
+    0,
+    function(fs) {
+      console.log('file system open: ' + fs.name);
+      fs.root.getFile(
+        filepath,
+        { create: true, exclusive: false },
+        function(fileEntry) {
+          console.log('fileEntry is file?' + fileEntry.isFile.toString());
+          // fileEntry.name == 'someFile.txt'
+          // fileEntry.fullPath == '/someFile.txt'
+          writeFile(fileEntry, null);
+        },
+        onErrorCreateFile
+      );
+    },
+    onErrorLoadFs
+  );
+
+  /*try {
     return await Filesystem.mkdir({
       path: filepath,
-      directory: FilesystemDirectory.Documents,
+      directory: Directory.Documents,
       recursive: false
     });
   } catch (e) {
-    console.log('FMM: No se pudo crear el directorio. ' + e);
-  }
+    console.log('FMM: No se pudo crear el directorio: ' + e);
+  }*/
 }
 
 // CreateRootFolder, setRootFolder, checkIfRootFolder y checkIfEmpty no implementados
@@ -260,7 +320,7 @@ export async function getFolderContent(filepath) {
   try {
     return await Filesystem.readdir({
       path: filepath,
-      directory: FilesystemDirectory.Documents
+      directory: Directory.Documents
     });
   } catch (e) {
     console.error('FMM: No se pudo leer el directorio', e);

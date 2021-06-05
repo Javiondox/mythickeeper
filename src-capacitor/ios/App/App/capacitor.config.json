@@ -1,0 +1,7 @@
+{
+  "appId": "org.javiondox.mythickeeper",
+  "appName": "MythicKeeper",
+  "bundledWebRuntime": true,
+  "npmClient": "yarn",
+  "webDir": "www"
+}

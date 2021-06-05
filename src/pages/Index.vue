@@ -1,36 +1,33 @@
 <template>
   <q-page class="flex flex-center">
-    <div class="text-h4" style="width:100%;text-align:center;">
-      ¡Bienvenido a MythicKeeper!
-    </div>
 
-    <div class="text-h1" style="margin: 0 auto;">
-		<q-img v-if="isDark" src="~assets/logolightbig.png"></q-img>
-		<q-img v-else src="~assets/logodarkbig.png"></q-img>
-	</div>
+	<q-img class="q-mx-lg q-my-xl" v-if="isDark" src="~assets/logodarkbig.png"></q-img>
+	<q-img class="q-mx-lg q-my-xl" v-else src="~assets/logolightbig.png"></q-img>
 
-    <div class="text-h6" style="text-align:center;">
-      MythicKeeper es una herramienta que permite a escritores anotar
-      rápidamente sus ideas independientemente de la plataforma utilizando
-      Markdown y servicios de sincronización.
-    </div>
-    <div class="flex flex-center q-mx-xl">
-      <transition appear enter-active-class="animated heartBeat">
-        <CreateOrLoadRootDialog v-model="colrdialog" />
-      </transition>
-      <q-btn
-        class="q-mt-xl"
-        color=""
-        text-color="primary"
-        unelevated
-        to="/guide"
-        label="Ayuda"
-        no-caps
-      />
+    <div class="flex flex-center q-mx-xl row">
+	<q-btn-group spread class="q-mt-xl">
+    	<CreateOrLoadRootDialog v-model="colrdialog" />
+			<q-btn
+				color="primary"
+				text-color="white"
+				unelevated
+				to="/settings"
+				label="Opciones"
+				no-caps
+			/>
+			<q-btn
+				color="primary"
+				text-color="white"
+				unelevated
+				to="/guide"
+				label="Ayuda"
+				no-caps
+			/>
+				</q-btn-group>
     </div>
     <!--DEBUG-->
+	<q-btn-group spread>
     <q-btn
-      class="q-mt-xl"
       color=""
       icon="handyman"
       text-color="yellow"
@@ -40,7 +37,6 @@
       no-caps
     />
     <q-btn
-      class="q-mt-xl"
       color=""
       icon="handyman"
       text-color="yellow"
@@ -49,6 +45,7 @@
       label="GRIDEXPLORER"
       no-caps
     />
+	</q-btn-group>
   </q-page>
 </template>
 

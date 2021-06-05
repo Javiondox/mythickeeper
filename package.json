@@ -11,8 +11,10 @@
   },
   "dependencies": {
     "@capacitor/core": "^3.0.0",
+    "@capacitor/filesystem": "^1.0.0",
     "@quasar/extras": "^1.0.0",
     "@vue/composition-api": "^1.0.0-rc.3",
+    "cordova-plugin-file": "^6.0.2",
     "core-js": "^3.6.5",
     "dropbox": "^9.8.6",
     "fs-extra": "^8.1.0",

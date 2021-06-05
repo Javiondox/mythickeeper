@@ -91,7 +91,7 @@ export default {
 		html: true,
         message: `<b>${Version}.</b> `+ "Por José Javier Sánchez Piedras.<br><hr>"+
 		
-		"Una aplicación Quasar utilizando Vue.js, Electron y Cordova.<br> Hecha como proyecto de fin de curso 2019-2021 en IES Serra Perenxisa.<br><br>"+
+		"Una aplicación Quasar utilizando Vue.js, Electron y Capacitor.<br> Hecha como proyecto de fin de curso 2019-2021 en IES Serra Perenxisa.<br><br>"+
 		
 		"Todos los derechos reservados."
 		})

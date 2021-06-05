@@ -89,7 +89,7 @@ export default {
       const mode = this.$q.platform.is.mobile ? 'Mobile' : '';
       const fm = require(`src/js/FileManager${mode}.js`);
       const contentPath = UserPrefs.TemporalStorage.getItem('sRealPath');
-      if (mode == '') {
+      //if (mode == '') {
         //Si Electron
         //CARPETAS
         let contentJSONsArray = Array.from(
@@ -125,9 +125,9 @@ export default {
 		if(this.contentfolders.length + this.contentsheets.length == 0){
 			this.isEmpty = true;
 		}
-      } else {
+      //} else {
         //TODO CAPACITOR
-      }
+      //}
     },
     async update() {
       await this.loadContents();
