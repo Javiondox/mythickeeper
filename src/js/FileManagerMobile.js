@@ -20,10 +20,13 @@ export function pathGetFile(path) {
 }
 
 export function pathGetExt(path) {
-  return path
-    .replace(/^.*[\\\/]/, '')
-    .split('.')
-    .pop();
+  return (
+    '.' +
+    path
+      .replace(/^.*[\\\/]/, '')
+      .split('.')
+      .pop()
+  );
 }
 
 export function pathGetName(path) {
@@ -241,7 +244,7 @@ export function copyMarkdown(origin, destination) {
 
 export async function createFolder(filepath) {
   try {
-    let res = await Filesystem.mkdir({
+    return await Filesystem.mkdir({
       path: filepath,
       directory: FilesystemDirectory.Documents,
       recursive: false
@@ -254,10 +257,14 @@ export async function createFolder(filepath) {
 // CreateRootFolder, setRootFolder, checkIfRootFolder y checkIfEmpty no implementados
 
 export async function getFolderContent(filepath) {
-  return await Filesystem.readdir({
-    path: filepath,
-    directory: FilesystemDirectory.Documents
-  });
+  try {
+    return await Filesystem.readdir({
+      path: filepath,
+      directory: FilesystemDirectory.Documents
+    });
+  } catch (e) {
+    console.error('FMM: No se pudo leer el directorio', e);
+  }
 }
 
 export function loadCurrentFolder() {
