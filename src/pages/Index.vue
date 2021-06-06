@@ -51,27 +51,6 @@
         />
       </q-btn-group>
     </div>
-    <!--DEBUG
-    <q-btn-group spread>
-      <q-btn
-        color=""
-        icon="handyman"
-        text-color="yellow"
-        unelevated
-        to="/preview"
-        label="PREVIEW"
-        no-caps
-      />
-      <q-btn
-        color=""
-        icon="handyman"
-        text-color="yellow"
-        unelevated
-        to="/gridExplorer"
-        label="GRIDEXPLORER"
-        no-caps
-      />
-    </q-btn-group>-->
   </q-page>
 </template>
 
@@ -121,6 +100,7 @@ export default {
     }
   },
   mounted() {
+    EventBus.$emit('changeTitle');
     EventBus.$emit('globalBreadCrumbs', false);
     EventBus.$emit('fastButtons', 'none');
   }

@@ -327,6 +327,7 @@ export default {
   mounted() {
     EventBus.$emit('globalBreadCrumbs', false);
     EventBus.$emit('fastButtons', 'none');
+    EventBus.$emit('changeTitle', 'Ajustes');
   }
 };
 </script>

@@ -48,6 +48,11 @@ const routes = [
         path: '/editor',
         name: 'editor',
         component: () => import('pages/Editor.vue')
+      },
+      {
+        path: '/dev',
+        name: 'dev',
+        component: () => import('pages/Dev.vue')
       }
     ]
   },

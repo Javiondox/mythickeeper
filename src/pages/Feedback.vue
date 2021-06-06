@@ -35,6 +35,7 @@
 
 <script>
 import { openURL } from 'quasar';
+import { EventBus } from 'src/js/vue-bus';
 export default {
   data() {
     return {
@@ -53,6 +54,7 @@ export default {
   mounted() {
     EventBus.$emit('globalBreadCrumbs', false);
     EventBus.$emit('fastButtons', 'none');
+    EventBus.$emit('changeTitle', 'Retroalimentación');
   }
 };
 </script>

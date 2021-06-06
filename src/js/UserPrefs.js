@@ -29,6 +29,7 @@ export const TemporalStorage = SessionStorage;
 //sEditIcon corresponde al icono que será editado
 //sBreadFolders es una array de objetos que se convertirán en q-breadcrumbs-el
 //sCurrentNames es una array de strings que contiene los nombres de todos los archivos visbles (usado para validación)
+//sDevTools muestra información adicional para desarrolladores al hacer click en el botón de versión varias veces
 
 if (SessionStorage.getLength == 0) {
   TemporalStorage.set('sRealPath', '');
@@ -42,6 +43,7 @@ if (SessionStorage.getLength == 0) {
   TemporalStorage.set('sBreadFolders', [new qBreadCumbsEl()]);
   TemporalStorage.set('sDropboxStatus', '');
   TemporalStorage.set('sCurrentNames', []);
+  TemporalStorage.set('sDevTools', false);
 }
 
 export function load() {
