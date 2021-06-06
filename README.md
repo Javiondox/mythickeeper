@@ -1,5 +1,7 @@
 # MythicKeeper (mythickeeper)
 
+This project a student's project and it is in spanish. Este proyecto es un projecto de estudiante y está en español.
+
 A worldbuilding tool made in Quasar + Vue.js. This program will not recive any updates after is finished. This is a student's proyect, do not expect high quality code.
 
 ## Install the dependencies
