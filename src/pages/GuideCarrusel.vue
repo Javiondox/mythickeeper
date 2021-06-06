@@ -30,25 +30,23 @@
             MythicKeeper te permite plasmar tus ideas rápidamente sin muchas
             preocupaciones haciendo uso de
             <a href="https://es.wikipedia.org/wiki/Markdown">Markdown</a>.
-            Mientras mantiene todas tus locas ideas guardadas en la nube (con tu
-            permiso).
           </div>
         </q-carousel-slide>
         <q-carousel-slide name="layers" class="column no-wrap flex-center">
           <q-icon name="folder" size="56px" />
           <div class="q-mt-md text-center">
-            Puedes mantenerlas organizadas en Carpesanos, Carpetas y Hojas. Los
-            carpesanos son carpetas de alto nivel, destinadas para englobar
-            temas grandes como distintos libros o campañas que estes
-            produciendo. Y las hojas son entradas donde puedes escribir.
+            Puedes mantenerlas organizadas usando "Carpetas" y "Hojas". Siendo
+            las "Hojas" son documentos donde puedes escribir.
           </div>
         </q-carousel-slide>
         <q-carousel-slide name="map" class="column no-wrap flex-center">
           <q-icon name="settings_suggest" size="56px" />
           <div class="q-mt-md text-center">
-            Disfruta de la aplicación. Puedes modificar ajustes de la misma en
-            Ajustes en el menú lateral. Del mismo modo, añadir un servicio de
-            sincronización.
+            ¡Eso es todo! ¡Disfruta de la aplicación!
+            <p>
+              Si quieres modificar algún ajuste de la misma, pulsa opciones o
+              navega al menú lateral.
+            </p>
           </div>
           <q-btn
             v-on:click="trashGuide"
@@ -57,6 +55,7 @@
             text-color="white"
             unelevated
             label="Listo"
+            outline
           />
         </q-carousel-slide>
       </q-carousel>
@@ -78,16 +77,16 @@ export default {
   methods: {
     trashGuide: function() {
       UserPrefs.set('kFirstTime', false);
-	  if(UserPrefs.get('kMainFolderLocation') == '' || undefined){
-		  this.$router.push("/landing")
-	  } else {
-		  this.$router.push("/help")
-	  }
+      if (UserPrefs.get('kMainFolderLocation') == '' || undefined) {
+        this.$router.push('/landing');
+      } else {
+        this.$router.push('/help');
+      }
     }
   },
-  created(){
-	UserPrefs.set('kFirstTime',true)
-    UserPrefs.set('kStarted',false)
+  created() {
+    UserPrefs.set('kFirstTime', true);
+    UserPrefs.set('kStarted', false);
   }
 };
 </script>

@@ -96,6 +96,10 @@ export default {
 		"Todos los derechos reservados."
 		})
 	}
+  },
+  mounted() {
+    EventBus.$emit('globalBreadCrumbs', false);
+    EventBus.$emit('fastButtons', 'none');
   }
 };
 </script>

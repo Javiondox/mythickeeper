@@ -3,11 +3,13 @@
     <template v-if="this.$q.platform.is.mobile">
       <q-img
         class="q-mx-lg q-my-xl"
+        style="width:90%"
         v-if="isDark"
         src="~assets/logodarkbig.png"
       ></q-img>
       <q-img
         class="q-mx-lg q-my-xl"
+        style="width:90%"
         v-else
         src="~assets/logolightbig.png"
       ></q-img
@@ -26,7 +28,8 @@
         src="~assets/logolightbig.png"
       ></q-img
     ></template>
-
+    <div v-if="this.$q.platform.is.mobile" class="q-my-xl"></div>
+    <div v-if="this.$q.platform.is.mobile" class="q-my-xl"></div>
     <div class="flex flex-center q-mx-xl row">
       <q-btn-group spread class="q-mt-xl">
         <CreateOrLoadRootDialog v-model="colrdialog" />

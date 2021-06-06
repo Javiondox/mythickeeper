@@ -49,6 +49,10 @@ export default {
     toKofi: function() {
       openURL(this.kofiLink);
     }
+  },
+  mounted() {
+    EventBus.$emit('globalBreadCrumbs', false);
+    EventBus.$emit('fastButtons', 'none');
   }
 };
 </script>
