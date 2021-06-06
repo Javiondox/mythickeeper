@@ -403,6 +403,12 @@ export default {
       } else {
         this.breadfolders.push({ Name, Icon, clickEvent, folderindex });
       }
+    },
+    SyncStatusInfo() {
+      this.$q.notify({
+        type: 'info',
+        message: `Esta función no ha sido implementada.`
+      });
     }
   },
   mounted() {

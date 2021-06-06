@@ -107,73 +107,88 @@
         </template>
         <!--Movil-->
         <template v-if="$q.platform.is.mobile">
-          <q-btn
-            :ripple="false"
-            round
-            padding="sm sm"
-            text-color="blue"
-            unelevated
-            icon="edit"
-            size="20px"
-            v-if="Type == 'Sheet'"
-            @click="editSelf()"
-          />
-          <q-btn
-            :ripple="false"
-            round
-            padding="sm sm"
-            class="absolute-top-right"
-            text-color="white"
-            unelevated
-            icon="more_vert"
-            size="20px"
-          >
-            <q-menu anchor="center right" self="center left">
-              <q-list bordered style="min-width: 100px">
-                <q-item clickable v-close-popup v-ripple @click="renameSelf()">
-                  <q-item-section avatar>
-                    <q-icon name="badge" color="green"></q-icon>
-                  </q-item-section>
-                  <q-item-section>Renombrar</q-item-section>
-                </q-item>
-                <q-item clickable v-close-popup v-ripple @click="modifySelf()">
-                  <q-item-section avatar>
-                    <q-icon name="settings_suggest" color="secondary"></q-icon>
-                  </q-item-section>
-                  <q-item-section>Modificar ajustes</q-item-section>
-                </q-item>
-                <q-item
-                  v-if="Type == 'Folder'"
-                  clickable
-                  v-close-popup
-                  v-ripple
-                >
-                  <q-item-section avatar>
-                    <q-icon name="get_app" color="orange"></q-icon>
-                  </q-item-section>
-                  <q-item-section>Importar</q-item-section>
-                </q-item>
-                <q-item clickable v-close-popup v-ripple>
-                  <q-item-section avatar>
-                    <q-icon name="publish" color="purple"></q-icon>
-                  </q-item-section>
-                  <q-item-section>Exportar</q-item-section>
-                </q-item>
-                <q-separator />
-                <q-item
-                  clickable
-                  v-close-popup
-                  v-ripple
-                  @click.stop="deleteSelf()"
-                >
-                  <q-item-section avatar>
-                    <q-icon name="delete" color="red"></q-icon>
-                  </q-item-section>
-                  <q-item-section>Eliminar</q-item-section>
-                </q-item>
-              </q-list>
-            </q-menu>
-          </q-btn>
+          <div>
+            <q-btn
+              :ripple="false"
+              round
+              padding="sm sm"
+              text-color="blue"
+              unelevated
+              icon="edit"
+              size="20px"
+              v-if="Type == 'Sheet'"
+              @click="editSelf()"
+            />
+            <q-btn
+              :ripple="false"
+              round
+              padding="sm sm"
+              class="absolute-top-right"
+              text-color="white"
+              unelevated
+              icon="more_vert"
+              size="20px"
+            >
+              <q-menu anchor="center right" self="center left">
+                <q-list bordered style="min-width: 100px">
+                  <q-item
+                    clickable
+                    v-close-popup
+                    v-ripple
+                    @click="renameSelf()"
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="badge" color="green"></q-icon>
+                    </q-item-section>
+                    <q-item-section>Renombrar</q-item-section>
+                  </q-item>
+                  <q-item
+                    clickable
+                    v-close-popup
+                    v-ripple
+                    @click="modifySelf()"
+                  >
+                    <q-item-section avatar>
+                      <q-icon
+                        name="settings_suggest"
+                        color="secondary"
+                      ></q-icon>
+                    </q-item-section>
+                    <q-item-section>Modificar ajustes</q-item-section>
+                  </q-item>
+                  <q-item
+                    v-if="Type == 'Folder'"
+                    clickable
+                    v-close-popup
+                    v-ripple
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="get_app" color="orange"></q-icon>
+                    </q-item-section>
+                    <q-item-section>Importar</q-item-section>
+                  </q-item>
+                  <q-item clickable v-close-popup v-ripple>
+                    <q-item-section avatar>
+                      <q-icon name="publish" color="purple"></q-icon>
+                    </q-item-section>
+                    <q-item-section>Exportar</q-item-section>
+                  </q-item>
+                  <q-separator />
+                  <q-item
+                    clickable
+                    v-close-popup
+                    v-ripple
+                    @click.stop="deleteSelf()"
+                  >
+                    <q-item-section avatar>
+                      <q-icon name="delete" color="red"></q-icon>
+                    </q-item-section>
+                    <q-item-section>Eliminar</q-item-section>
+                  </q-item>
+                </q-list>
+              </q-menu>
+            </q-btn>
+          </div>
         </template>
       </q-item-section>
     </q-item>
@@ -189,6 +204,7 @@
 import { qBreadCumbsEl } from 'src/js/Content';
 import { EventBus } from 'src/js/vue-bus';
 import ModifyContentDialog from 'components/dialogs/ModifyContentDialog';
+import { searchStringInArray } from 'src/js/ValidationHelpers';
 let UserPrefs = require('src/js/UserPrefs.js');
 export default {
   name: 'ItemList',
@@ -240,6 +256,10 @@ export default {
     },
     Color: {
       type: String
+    },
+    UsedNames: {
+      type: Array,
+      default: () => UserPrefs.TemporalStorage.getItem('sCurrentNames')
     }
   },
   components: { ModifyContentDialog },
@@ -295,6 +315,7 @@ export default {
       const assosiatedPath = UserPrefs.TemporalStorage.getItem('sRealPath');
       if (mode == '') {
         //Si Electron
+
         this.$q
           .dialog({
             title: 'Renombrar',
@@ -302,8 +323,11 @@ export default {
             prompt: {
               model: '',
               isValid: val =>
-                val.length > 0 && val != 'media' && val != 'mythickeeper.dat', // << here is the magic
-              type: 'text' // optional
+                val.length > 0 &&
+                val != 'media' &&
+                val != 'mythickeeper.dat' &&
+                !searchStringInArray(val, this.UsedNames),
+              type: 'text'
             },
             cancel: true,
             persistent: true

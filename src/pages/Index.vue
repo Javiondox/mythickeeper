@@ -1,51 +1,74 @@
 <template>
-  <q-page class="flex flex-center">
-
-	<q-img class="q-mx-lg q-my-xl" v-if="isDark" src="~assets/logodarkbig.png"></q-img>
-	<q-img class="q-mx-lg q-my-xl" v-else src="~assets/logolightbig.png"></q-img>
+  <q-page class="flex flex-center column">
+    <template v-if="this.$q.platform.is.mobile">
+      <q-img
+        class="q-mx-lg q-my-xl"
+        v-if="isDark"
+        src="~assets/logodarkbig.png"
+      ></q-img>
+      <q-img
+        class="q-mx-lg q-my-xl"
+        v-else
+        src="~assets/logolightbig.png"
+      ></q-img
+    ></template>
+    <template v-else>
+      <q-img
+        class="q-mx-lg q-my-xl"
+        style="width:40%"
+        v-if="isDark"
+        src="~assets/logodarkbig.png"
+      ></q-img>
+      <q-img
+        class="q-mx-lg q-my-xl"
+        style="width:40%"
+        v-else
+        src="~assets/logolightbig.png"
+      ></q-img
+    ></template>
 
     <div class="flex flex-center q-mx-xl row">
-	<q-btn-group spread class="q-mt-xl">
-    	<CreateOrLoadRootDialog v-model="colrdialog" />
-			<q-btn
-				color="primary"
-				text-color="white"
-				unelevated
-				to="/settings"
-				label="Opciones"
-				no-caps
-			/>
-			<q-btn
-				color="primary"
-				text-color="white"
-				unelevated
-				to="/guide"
-				label="Ayuda"
-				no-caps
-			/>
-				</q-btn-group>
+      <q-btn-group spread class="q-mt-xl">
+        <CreateOrLoadRootDialog v-model="colrdialog" />
+        <q-btn
+          color="primary"
+          text-color="white"
+          unelevated
+          to="/settings"
+          label="Opciones"
+          no-caps
+        />
+        <q-btn
+          color="primary"
+          text-color="white"
+          unelevated
+          to="/guide"
+          label="Ayuda"
+          no-caps
+        />
+      </q-btn-group>
     </div>
-    <!--DEBUG-->
-	<q-btn-group spread>
-    <q-btn
-      color=""
-      icon="handyman"
-      text-color="yellow"
-      unelevated
-      to="/preview"
-      label="PREVIEW"
-      no-caps
-    />
-    <q-btn
-      color=""
-      icon="handyman"
-      text-color="yellow"
-      unelevated
-      to="/gridExplorer"
-      label="GRIDEXPLORER"
-      no-caps
-    />
-	</q-btn-group>
+    <!--DEBUG
+    <q-btn-group spread>
+      <q-btn
+        color=""
+        icon="handyman"
+        text-color="yellow"
+        unelevated
+        to="/preview"
+        label="PREVIEW"
+        no-caps
+      />
+      <q-btn
+        color=""
+        icon="handyman"
+        text-color="yellow"
+        unelevated
+        to="/gridExplorer"
+        label="GRIDEXPLORER"
+        no-caps
+      />
+    </q-btn-group>-->
   </q-page>
 </template>
 
@@ -86,13 +109,13 @@ export default {
     }
   },
   computed: {
-	  isDark: function (){
-		  if(this.$q.dark.isActive){
-			  return true
-		  } else {
-			  return false
-		  }
-	  }
+    isDark: function() {
+      if (this.$q.dark.isActive) {
+        return true;
+      } else {
+        return false;
+      }
+    }
   },
   mounted() {
     EventBus.$emit('globalBreadCrumbs', false);

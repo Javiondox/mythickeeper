@@ -16,15 +16,16 @@
             :Image="folder.image"
             Type="Folder"
             class="q-ma-sm"
+            :usedNames="usedNames"
           ></CardGrid>
         </transition>
       </div>
     </div>
-      <q-separator
-	  v-if="contentfolders.length > 0"
-        class="q-ma-lg"
-        style="display:in-line-block;min-width:96%"
-      />
+    <q-separator
+      v-if="contentfolders.length > 0"
+      class="q-ma-lg"
+      style="display:in-line-block;min-width:96%"
+    />
     <div class="flex row content-start">
       <div v-for="sheet in contentsheets" v-bind:key="sheet.id">
         <transition
@@ -40,27 +41,21 @@
             :Image="sheet.image"
             Type="Sheet"
             class="q-ma-sm"
+            :UsedNames="usedNames"
           ></CardGrid>
         </transition>
       </div>
     </div>
-	<transition
-	appear
+    <transition
+      appear
       enter-active-class="animated fadeIn"
       leave-active-class="animated fadeOut"
-	  >
-	<div class="q-mt-lg" v-if="isEmpty"><p class="text-center text-h3">Vacío...</p><p class="text-center text-h5">¡Prueba a crear algunos elementos!</p></div>
-  </transition>
-  </q-page>
-  <q-page v-else>
-    <div class="q-ma-auto col-md-4 absolute-center">
-      <p class="text-h3" style="text-align:center;">
-        Vacío.
-      </p>
-      <p class="text-h5">
-        Añade contenido pulsando <q-icon name="create_new_folder"></q-icon>.
-      </p>
-    </div>
+    >
+      <div class="absolute-center q-mt-lg" v-if="isEmpty">
+        <p class="text-center text-h3">Vacío...</p>
+        <p class="text-center text-h5">¡Prueba a crear algunos elementos!</p>
+      </div>
+    </transition>
   </q-page>
 </template>
 <script>
@@ -77,7 +72,8 @@ export default {
       contents: true,
       contentfolders: [],
       contentsheets: [],
-	  isEmpty: false
+      isEmpty: false,
+      usedNames: UserPrefs.TemporalStorage.getItem('sCurrentNames')
     };
   },
   components: {
@@ -89,7 +85,7 @@ export default {
       const mode = this.$q.platform.is.mobile ? 'Mobile' : '';
       const fm = require(`src/js/FileManager${mode}.js`);
       const contentPath = UserPrefs.TemporalStorage.getItem('sRealPath');
-      //if (mode == '') {
+      if (mode == '') {
         //Si Electron
         //CARPETAS
         let contentJSONsArray = Array.from(
@@ -122,20 +118,33 @@ export default {
         }
         this.contentsheets = tempData;
 
-		if(this.contentfolders.length + this.contentsheets.length == 0){
-			this.isEmpty = true;
-		}
-      //} else {
+        if (this.contentfolders.length + this.contentsheets.length == 0) {
+          this.isEmpty = true;
+        } else {
+          this.isEmpty = false;
+        }
+        this.usedNames = this.UsedNames();
+      } else {
         //TODO CAPACITOR
-      //}
+      }
     },
     async update() {
       await this.loadContents();
       this.$forceUpdate();
+      if (this.contentfolders.length + this.contentsheets.length == 0) {
+        this.isEmpty = true;
+      } else {
+        this.isEmpty = false;
+      }
     },
-    routeFixer() {}
+    UsedNames() {
+      let content = [...this.contentfolders, ...this.contentsheets];
+      let nombres = content.map(content => content.name);
+      UserPrefs.TemporalStorage.set('sCurrentNames', nombres);
+      return nombres;
+    }
   },
-  mounted() {
+  async mounted() {
     EventBus.$emit('globalBreadCrumbs', true);
     EventBus.$emit('fastButtons', 'creation');
     let rootpath = UserPrefs.get('kMainFolderLocation');

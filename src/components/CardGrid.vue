@@ -227,7 +227,9 @@
 import { qBreadCumbsEl } from 'src/js/Content';
 import { EventBus } from 'src/js/vue-bus';
 import ModifyContentDialog from 'components/dialogs/ModifyContentDialog';
+import { searchStringInArray } from 'src/js/ValidationHelpers';
 let UserPrefs = require('src/js/UserPrefs.js');
+
 export default {
   name: 'CardGrid',
   data: function() {
@@ -280,6 +282,10 @@ export default {
     },
     Color: {
       type: String
+    },
+    UsedNames: {
+      type: Array,
+      default: () => UserPrefs.TemporalStorage.getItem('sCurrentNames')
     }
   },
   components: {
@@ -344,8 +350,11 @@ export default {
             prompt: {
               model: '',
               isValid: val =>
-                val.length > 0 && val != 'media' && val != 'mythickeeper.dat', // << here is the magic
-              type: 'text' // optional
+                val.length > 0 &&
+                val != 'media' &&
+                val != 'mythickeeper.dat' &&
+                !searchStringInArray(val, this.UsedNames),
+              type: 'text'
             },
             cancel: true,
             persistent: true
@@ -437,11 +446,9 @@ export default {
             :*/ require('electron');
         let DirectoryPath = '';
         let selection = ipcRenderer.sendSync('showDirectoryGetter');
-        console.log(selection);
         if (selection.canceled != true) {
           //Si no ha sido cancelado
           DirectoryPath = selection.filePaths[0];
-          console.log(thispath + ' ' + DirectoryPath);
           await fm.copy(thispath, DirectoryPath + '/');
           this.$q.notify({
             type: 'positive',
@@ -466,7 +473,6 @@ export default {
             :*/ require('electron');
         let DirectoryPath = '';
         let selection = ipcRenderer.sendSync('showDirectoryGetter');
-        console.log(selection);
         if (selection.canceled != true) {
           //Si no ha sido cancelado
           DirectoryPath = selection.filePaths[0];

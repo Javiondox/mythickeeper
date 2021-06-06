@@ -19,17 +19,13 @@
             :Color="folder.color"
             :Image="folder.image"
             Type="Folder"
+            :usedNames="usedNames"
           ></ItemList>
         </transition>
       </div>
     </div>
-    <transition
-      appear
-      enter-active-class="animated fadeIn"
-      leave-active-class="animated fadeOut"
-    >
-      <q-separator class="q-ma-lg" />
-    </transition>
+
+    <q-separator class="q-ma-lg" v-if="!isEmpty" />
     <div class="flex column content-start" style="width:100%">
       <div
         v-for="sheet in contentsheets"
@@ -48,10 +44,21 @@
             :Color="sheet.color"
             :Image="sheet.image"
             Type="Sheet"
+            :usedNames="usedNames"
           ></ItemList>
         </transition>
       </div>
     </div>
+    <transition
+      appear
+      enter-active-class="animated fadeIn"
+      leave-active-class="animated fadeOut"
+    >
+      <div class="absolute-center q-mt-lg" v-if="isEmpty">
+        <p class="text-center text-h3">Vacío...</p>
+        <p class="text-center text-h5">¡Prueba a crear algunos elementos!</p>
+      </div>
+    </transition>
   </q-page>
 </template>
 <script>
@@ -64,7 +71,13 @@ UserPrefs.TemporalStorage.set('sLastView', 'List');
 export default {
   name: 'ItemListNavegation',
   data: function() {
-    return { contents: true, contentfolders: [], contentsheets: [] };
+    return {
+      contents: true,
+      contentfolders: [],
+      contentsheets: [],
+      isEmpty: false,
+      usedNames: UserPrefs.TemporalStorage.getItem('sCurrentNames')
+    };
   },
   components: {
     ItemList
@@ -106,6 +119,13 @@ export default {
           }
         }
         this.contentsheets = tempData;
+
+        if (this.contentfolders.length + this.contentsheets.length == 0) {
+          this.isEmpty = true;
+        } else {
+          this.isEmpty = false;
+        }
+        this.usedNames = this.UsedNames();
       } else {
         //TODO CAPACITOR
       }
@@ -113,8 +133,18 @@ export default {
     async update() {
       await this.loadContents();
       this.$forceUpdate();
+      if (this.contentfolders.length + this.contentsheets.length == 0) {
+        this.isEmpty = true;
+      } else {
+        this.isEmpty = false;
+      }
     },
-    routeFixer() {}
+    UsedNames() {
+      let content = [...this.contentfolders, ...this.contentsheets];
+      let nombres = content.map(content => content.name);
+      UserPrefs.TemporalStorage.set('sCurrentNames', nombres);
+      return nombres;
+    }
   },
   mounted() {
     EventBus.$emit('globalBreadCrumbs', true);
