@@ -60,6 +60,20 @@
             <q-item-label caption>Mostrar guía de inicio de nuevo</q-item-label>
           </q-item-section>
         </q-item>
+        <q-item clickable v-ripple to="/userGuide">
+          <q-item-section top avatar>
+            <q-avatar color="primary" text-color="white" icon="mdi-lifebuoy" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>
+              Mostrar la guía de usuario
+            </q-item-label>
+            <q-item-label caption
+              >Mostrar guía de usuario (Requiere una conexión a internet activa
+              para mostrar las imágenes)</q-item-label
+            >
+          </q-item-section>
+        </q-item>
         <q-item clickable v-ripple @click.native="about()">
           <q-item-section top avatar>
             <q-avatar
@@ -90,7 +104,12 @@
             >
           </q-item-section>
         </q-item>
-        <template v-if="isDev || versionClicks > versionNeededClicks">
+        <template
+          v-if="
+            (isDev || versionClicks > versionNeededClicks) &&
+              this.$q.platform.is.desktop
+          "
+        >
           <transition
             appear
             enter-active-class="animated fadeIn"
@@ -135,7 +154,7 @@ export default {
       qmarkdownGuide:
         'https://quasarframework.github.io/quasar-ui-qmarkdown/examples',
       versionClicks: 0,
-      versionNeededClicks: 6
+      versionNeededClicks: this.$q.platform.is.desktop ? 6 : 100000000
     };
   },
   methods: {
@@ -162,7 +181,7 @@ export default {
           type: 'info',
           message: Version
         });
-      } else {
+      } else if (this.$q.platform.is.desktop) {
         if (this.versionClicks < this.versionNeededClicks) {
           this.$q.notify({
             type: 'info',
@@ -177,6 +196,11 @@ export default {
 
           UserPrefs.TemporalStorage.set('sDevTools', true);
         }
+      } else {
+        this.$q.notify({
+          type: 'info',
+          message: Version
+        });
       }
       this.versionClicks++;
     }

@@ -1,6 +1,6 @@
 <!--Tendrá la interfaz e incluirá CardGrid o CardList-->
 <template>
-  <q-page class="flex column content-start" v-if="contents == true">
+  <q-page class="flex column content-start" v-if="contents == true" style="overflow-x: hidden;">
     <div class="flex column content-start" style="width:100%">
       <div
         v-for="folder in contentfolders"

@@ -105,7 +105,7 @@ import { EventBus } from '../js/vue-bus';
 let UserPrefs = require('src/js/UserPrefs.js');
 
 export default {
-  name: 'PageIndex',
+  name: 'dev',
   data() {
     return {
       colrdialog: true,

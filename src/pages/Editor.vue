@@ -1,5 +1,5 @@
 <template>
-  <q-page>
+  <q-page style="overflow-y: hidden;">
     <div class="fit absolute-top-left">
       <q-card
         class="full-width flex fixed-above row"
